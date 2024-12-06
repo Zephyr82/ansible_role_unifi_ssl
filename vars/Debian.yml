@@ -1,0 +1,6 @@
+---
+
+java_dir: "/usr/lib/unifi"
+keystore: "/var/lib/unifi/keystore"
+
+unifi_service_file: "/etc/init.d/unifi"

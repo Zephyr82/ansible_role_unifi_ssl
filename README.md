@@ -6,7 +6,7 @@ Installs SSL certificates for Unifi, Unifi Video and Unifi CloudKey platforms.
 
 - Python >= 2.6
 - OpenSSL
-- Hosts running Unifi, Unifi Video or a Unifi Cloudkey
+- Hosts running Unifi controller software
 
 ## Role Variables
 

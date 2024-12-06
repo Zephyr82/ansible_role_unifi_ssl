@@ -1,28 +1,26 @@
 ---
-- name: Check if Unifi
-  stat:
-    path: "/etc/init.d/unifi"
+- name: Load OS-specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - "default.yml"
+
+- name: main.yml | Check if Unifi is installed
+  ansible.builtin.stat:
+    path: "{{ unifi_service_file }}"
   register: unifi_stat
 
-- include: unifi.yml
+- name: main.yml | check if certificate fingerprints of new and old certificate are the same
+  ansible.builtin.include_tasks: certificate-check.yml
   when: (unifi_stat.stat.exists)
 
-- include: certificate-check.yml
-  when: (unifi_stat.stat.exists)
-
-- include: common.yml
+- name: main.yml | install the certificate into keystore
+  ansible.builtin.include_tasks: keystore.yml
   when: (unifi_stat.stat.exists) and (not certificate_match)
 
-- name: Check if Unifi-Video
-  stat:
-    path: "/etc/init.d/unifi-video"
-  register: unifi_video_stat
-
-- include: unifi-video.yml
-  when: (unifi_video_stat.stat.exists)
-
-- include: certificate-check.yml
-  when: (unifi_video_stat.stat.exists)
-
-- include: common.yml
-  when: (unifi_video_stat.stat.exists) and (not certificate_match)
+- name: main.yml | Restart service
+  service:
+    name: "{{ service_name }}"
+    state: restarted

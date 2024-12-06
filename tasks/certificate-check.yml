@@ -1,12 +1,12 @@
 ---
-- name: register new certificate fingerprint
+- name: certificate-check.yml | register new certificate fingerprint
   command: |
     openssl x509 -noout 
     -in {{ crt_full_path }} 
     -fingerprint -sha1
   register: cmd_new_fingerprint
 
-- name: register existing certificate fingerprint
+- name: certificate-check.yml | register existing certificate fingerprint
   command: |
     keytool -list -keystore {{ keystore }} -storepass {{ keystore_password }}
   register: cmd_old_fingerprint

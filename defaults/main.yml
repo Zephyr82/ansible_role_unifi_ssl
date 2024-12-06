@@ -2,3 +2,7 @@
 crt_full_path: ""
 key_full_path: ""
 intermediate_full_path: ""
+
+unifi_alias: unifi
+service_name: unifi
+keystore_password: aircontrolenterprise
