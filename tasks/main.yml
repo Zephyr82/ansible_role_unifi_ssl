@@ -1,10 +1,10 @@
 ---
-- name: Load OS-specific variables
-  include_vars: "{{ item }}"
+- name: main.yml | Load OS-specific variables
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
-    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-    - "{{ ansible_distribution }}.yml"
-    - "{{ ansible_os_family }}.yml"
+    - "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
+    - "{{ ansible_facts['distribution'] }}.yml"
+    - "{{ ansible_facts['os_family'] }}.yml"
     - "default.yml"
 
 - name: main.yml | Check if Unifi is installed
@@ -21,6 +21,6 @@
   when: (unifi_stat.stat.exists) and (not certificate_match)
 
 - name: main.yml | Restart service
-  service:
+  ansible.builtin.service:
     name: "{{ service_name }}"
     state: restarted

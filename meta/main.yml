@@ -2,25 +2,27 @@
 dependencies: []
 
 galaxy_info:
-  author: Ben Dews
+  author: Zephyr82
   description: Deploy SSL Certificates to Unifi and Unifi-Video Controllers
   license: MIT
+  role_name: unifi_ssl
+  namespace: zephyr82
   min_ansible_version: "1.2"
 
   platforms:
     - name: EL
       versions:
-      - "6"
-      - "7"
+        - "6"
+        - "7"
     - name: Debian
       versions:
-      - all
+        - all
     - name: Ubuntu
       versions:
-      - all
+        - all
     - name: FreeBSD
       versions:
-      - all
+        - all
 
   galaxy_tags:
     - ssl

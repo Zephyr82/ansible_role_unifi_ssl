@@ -1,23 +1,28 @@
 ---
 - name: certificate-check.yml | register new certificate fingerprint
-  command: |
-    openssl x509 -noout 
-    -in {{ crt_full_path }} 
+  ansible.builtin.command: |
+    openssl x509 -noout
+    -in {{ crt_full_path }}
     -fingerprint -sha1
+  changed_when: false
   register: cmd_new_fingerprint
 
 - name: certificate-check.yml | register existing certificate fingerprint
-  command: |
+  ansible.builtin.command: |
     keytool -list -keystore {{ keystore }} -storepass {{ keystore_password }}
+  changed_when: false
   register: cmd_old_fingerprint
 
-- set_fact:
-    certificate_match: no
+- name: certificate-check.yml | load certificate fingerprints into facts
+  ansible.builtin.set_fact:
+    certificate_match: false
     new_fingerprint: "{{ cmd_new_fingerprint.stdout | regex_search(regexp) }}"
     old_fingerprint: "{{ cmd_old_fingerprint.stdout | regex_findall(regexp) }}"
   vars:
     regexp: '(?:[0-9a-fA-F]{2}:){19}[0-9a-fA-F]{2}'
 
-- set_fact:
-    certificate_match: yes
+- name: certificate-check.yml | check if certificate fingerprints match
+  ansible.builtin.set_fact:
+    certificate_match: true
+  changed_when: new_fingerprint not in old_fingerprint
   when: new_fingerprint in old_fingerprint

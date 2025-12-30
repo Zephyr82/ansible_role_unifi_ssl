@@ -1,0 +1,3 @@
+tasks/certificate-check.yml name[casing]
+tasks/keystore.yml name[casing]
+tasks/main.yml name[casing]
